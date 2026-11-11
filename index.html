@@ -27,7 +27,10 @@ html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 1rem/1.55 "Figtree",system-ui,-apple-system,"Segoe UI",sans-serif}
 .fa{font-family:"Vazirmatn","Noto Naskh Arabic","Segoe UI",Tahoma,sans-serif}
 header{max-width:860px;margin:0 auto;padding:2.5rem 1.25rem 1rem;text-align:center}
-.hero-fa{font-size:clamp(4rem,18vw,7rem);font-weight:800;line-height:1.1;margin:0;color:var(--lapis)}
+.logo{display:block;width:clamp(84px,24vw,112px);height:auto;margin:0 auto .5rem}
+.badge{display:inline-flex;align-items:center;gap:.5rem;padding:.4rem .95rem;border-radius:999px;border:1.5px solid var(--turq);background:var(--card);color:var(--ink);font-weight:600;font-size:.9rem}
+.badge::before{content:"";width:.55rem;height:.55rem;border-radius:50%;background:var(--saffron)}
+.badge-wrap{text-align:center;margin:0 0 1.25rem}
 h1{font-size:clamp(1.5rem,5vw,2.1rem);margin:.25rem 0 .5rem;font-weight:700;letter-spacing:-.01em}
 header p{margin:0 auto;max-width:34rem;color:var(--muted)}
 .bar{height:6px;max-width:120px;margin:1.25rem auto 0;border-radius:3px;background:linear-gradient(90deg,var(--lapis) 0 33%,var(--turq) 33% 66%,var(--saffron) 66%)}
@@ -60,13 +63,23 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 1.25rem 2
 </head>
 <body>
 <header>
-  <p class="hero-fa fa" dir="rtl" lang="fa">سلام</p>
-  <h1>Say hello in Farsi</h1>
-  <p>Ten everyday greetings. Tap a card to see the Farsi and how to say it, then press Listen to hear it.</p>
+  <svg class="logo" viewBox="0 0 120 120" role="img" aria-label="Pomegranate icon" xmlns="http://www.w3.org/2000/svg">
+    <path d="M60 18C70 8 84 8 90 12C86 22 72 26 60 18Z" fill="var(--turq)"/>
+    <circle cx="60" cy="70" r="38" fill="var(--lapis)"/>
+    <path d="M44 38L48 22L55 33L60 18L65 33L72 22L76 38Z" fill="var(--saffron)"/>
+    <path d="M34 62C34 50 42 42 50 40" fill="none" stroke="var(--turq)" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="52" cy="76" r="4.5" fill="var(--saffron)"/>
+    <circle cx="66" cy="68" r="4.5" fill="var(--saffron)"/>
+    <circle cx="72" cy="84" r="4.5" fill="var(--saffron)"/>
+    <circle cx="56" cy="92" r="4.5" fill="var(--saffron)"/>
+  </svg>
+  <h1>Speak Farsi</h1>
+  <p>Bite-sized Persian lessons for English speakers</p>
   <div class="bar" aria-hidden="true"></div>
 </header>
 
 <main>
+  <div class="badge-wrap"><span class="badge">Lesson 1: Everyday Greetings</span></div>
   <ul class="grid" id="grid" aria-label="Farsi greeting flashcards"></ul>
 </main>
 
