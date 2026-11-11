@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Farsi Greetings: 10 Flashcards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&family=Vazirmatn:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f3f8f9; --ink:#12304a; --muted:#52697c; --card:#ffffff; --line:#cfe0e6;
+  --lapis:#1b4d8c; --turq:#1a9a9a; --saffron:#f2b632; --on-lapis:#ffffff; --warn-bg:#fff4d6; --warn-ink:#5a4200;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0e1b27; --ink:#e6f0f5; --muted:#9fb5c4; --card:#162a3a; --line:#27425a;
+    --lapis:#6aa5ec; --turq:#4cc4c0; --on-lapis:#0e1b27; --warn-bg:#3a3014; --warn-ink:#f5e2a8; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0e1b27; --ink:#e6f0f5; --muted:#9fb5c4; --card:#162a3a; --line:#27425a;
+  --lapis:#6aa5ec; --turq:#4cc4c0; --on-lapis:#0e1b27; --warn-bg:#3a3014; --warn-ink:#f5e2a8; color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1rem/1.55 "Figtree",system-ui,-apple-system,"Segoe UI",sans-serif}
+.fa{font-family:"Vazirmatn","Noto Naskh Arabic","Segoe UI",Tahoma,sans-serif}
+header{max-width:860px;margin:0 auto;padding:2.5rem 1.25rem 1rem;text-align:center}
+.hero-fa{font-size:clamp(4rem,18vw,7rem);font-weight:800;line-height:1.1;margin:0;color:var(--lapis)}
+h1{font-size:clamp(1.5rem,5vw,2.1rem);margin:.25rem 0 .5rem;font-weight:700;letter-spacing:-.01em}
+header p{margin:0 auto;max-width:34rem;color:var(--muted)}
+.bar{height:6px;max-width:120px;margin:1.25rem auto 0;border-radius:3px;background:linear-gradient(90deg,var(--lapis) 0 33%,var(--turq) 33% 66%,var(--saffron) 66%)}
+main{max-width:860px;margin:0 auto;padding:1rem 1.25rem 3rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.1rem;list-style:none;padding:0;margin:0}
+.card{perspective:1000px;min-height:230px;position:relative}
+.inner{position:relative;width:100%;height:100%;min-height:230px;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.3,.7,.2,1)}
+.card.flipped .inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;border:1.5px solid var(--line);background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.1rem;text-align:center;transition:visibility 0s .27s}
+.front{font:inherit;color:inherit;cursor:pointer;width:100%}
+.front .phrase{font-size:1.45rem;font-weight:700;line-height:1.25}
+.front .hint{margin-top:.8rem;font-size:.85rem;color:var(--muted)}
+.front::before{content:"";position:absolute;left:0;right:0;top:0;height:6px;border-radius:18px 18px 0 0;background:var(--turq)}
+.back{transform:rotateY(180deg);background:var(--lapis);color:var(--on-lapis);border-color:var(--lapis);gap:.15rem}
+.card:not(.flipped) .back,.card.flipped .front{visibility:hidden}
+.back .farsi{font-size:2.3rem;font-weight:600;line-height:1.5;margin:0}
+.back .phon{font-size:1.1rem;font-style:italic;margin:0 0 .7rem;opacity:.95}
+.actions{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center}
+button{font:inherit;cursor:pointer}
+.listen{background:var(--saffron);color:#2b2100;border:0;border-radius:999px;padding:.6rem 1.2rem;font-weight:700;min-height:44px}
+.listen:hover{filter:brightness(1.06)}
+.flip-back{background:transparent;color:inherit;border:1.5px solid currentColor;border-radius:999px;padding:.6rem 1rem;min-height:44px;opacity:.9}
+.msg{margin:.7rem 0 0;font-size:.85rem;border-radius:10px;padding:.5rem .7rem;background:var(--warn-bg);color:var(--warn-ink);text-align:left}
+.msg[hidden]{display:none}
+button:focus-visible{outline:3px solid var(--saffron);outline-offset:3px}
+.front:focus-visible{outline-color:var(--lapis)}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 1.25rem 2.5rem;max-width:34rem;margin:0 auto}
+@media (prefers-reduced-motion:reduce){.inner{transition:none}.face{transition:none}}
+</style>
+</head>
+<body>
+<header>
+  <p class="hero-fa fa" dir="rtl" lang="fa">سلام</p>
+  <h1>Say hello in Farsi</h1>
+  <p>Ten everyday greetings. Tap a card to see the Farsi and how to say it, then press Listen to hear it.</p>
+  <div class="bar" aria-hidden="true"></div>
+</header>
+
+<main>
+  <ul class="grid" id="grid" aria-label="Farsi greeting flashcards"></ul>
+</main>
+
+<footer>
+  Audio uses your device’s built-in voices. Persian voices aren’t available on every phone or browser.
+</footer>
+
+<script>
+const CARDS = [
+  { en: "Hello",                  fa: "سلام",              ph: "sa-LAAM" },
+  { en: "Good morning",           fa: "صبح بخیر",          ph: "sobh be-KHEYR" },
+  { en: "Good evening",           fa: "عصر بخیر",          ph: "asr be-KHEYR" },
+  { en: "Good night",             fa: "شب بخیر",           ph: "shab be-KHEYR" },
+  { en: "How are you?",           fa: "حالت چطوره؟",       ph: "haa-LET che-TOO-re?" },
+  { en: "I’m fine, thank you",    fa: "خوبم، ممنون",       ph: "khoo-BAM, mam-NOON" },
+  { en: "Thank you very much",    fa: "خیلی ممنون",        ph: "khey-LEE mam-NOON" },
+  { en: "Nice to meet you",       fa: "خوشبختم",           ph: "khosh-BAKH-tam" },
+  { en: "Welcome",                fa: "خوش آمدید",         ph: "khosh aa-ma-DEED" },
+  { en: "Goodbye",                fa: "خداحافظ",           ph: "khoh-daa-haa-FEZ" }
+];
+
+const supported = "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
+let voices = [];
+
+function loadVoices() {
+  if (!supported) return;
+  try { voices = window.speechSynthesis.getVoices() || []; } catch (e) { voices = []; }
+}
+function persianVoice() {
+  const norm = v => (v.lang || "").toLowerCase().replace("_", "-");
+  return voices.find(v => norm(v) === "fa-ir") || voices.find(v => norm(v).startsWith("fa"));
+}
+if (supported) {
+  loadVoices();
+  try { window.speechSynthesis.addEventListener("voiceschanged", loadVoices); } catch (e) {}
+}
+
+const FRIENDLY = "Your browser doesn’t have a Persian voice, so we can’t play this one aloud. Try Chrome, Edge or Safari on a device with Persian voices installed, and use the phonetic spelling above for now.";
+
+function listen(text, msgEl) {
+  msgEl.hidden = true;
+  if (!supported) { msgEl.textContent = FRIENDLY; msgEl.hidden = false; return; }
+  loadVoices();
+  const voice = persianVoice();
+  if (!voice) { msgEl.textContent = FRIENDLY; msgEl.hidden = false; return; }
+  try {
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "fa-IR";
+    u.voice = voice;
+    u.rate = 0.85;
+    u.onerror = () => { msgEl.textContent = "Sorry, the audio didn’t play. Please try again."; msgEl.hidden = false; };
+    window.speechSynthesis.speak(u);
+  } catch (e) {
+    msgEl.textContent = FRIENDLY; msgEl.hidden = false;
+  }
+}
+
+const grid = document.getElementById("grid");
+CARDS.forEach((c, i) => {
+  const li = document.createElement("li");
+  li.className = "card";
+  li.innerHTML = `
+    <div class="inner">
+      <button type="button" class="face front" aria-label="${c.en}. Show the Farsi translation.">
+        <span class="phrase">${c.en}</span>
+        <span class="hint">Tap to flip</span>
+      </button>
+      <div class="face back">
+        <p class="farsi fa" dir="rtl" lang="fa">${c.fa}</p>
+        <p class="phon">${c.ph}</p>
+        <div class="actions">
+          <button type="button" class="listen" aria-label="Listen to ${c.en} in Farsi">Listen</button>
+          <button type="button" class="flip-back">Flip back</button>
+        </div>
+        <p class="msg" role="status" hidden></p>
+      </div>
+    </div>`;
+  const front = li.querySelector(".front");
+  const flipBack = li.querySelector(".flip-back");
+  const listenBtn = li.querySelector(".listen");
+  const msg = li.querySelector(".msg");
+  front.addEventListener("click", () => {
+    li.classList.add("flipped");
+    setTimeout(() => listenBtn.focus({ preventScroll: true }), 300);
+  });
+  flipBack.addEventListener("click", () => {
+    li.classList.remove("flipped");
+    msg.hidden = true;
+    setTimeout(() => front.focus({ preventScroll: true }), 300);
+  });
+  listenBtn.addEventListener("click", () => listen(c.fa, msg));
+  grid.appendChild(li);
+});
+</script>
+</body>
+</html>
