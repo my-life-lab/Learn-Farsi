@@ -58,6 +58,46 @@ button{font:inherit;cursor:pointer}
 button:focus-visible{outline:3px solid var(--saffron);outline-offset:3px}
 .front:focus-visible{outline-color:var(--lapis)}
 footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 1.25rem 2.5rem;max-width:34rem;margin:0 auto}
+.tabs{display:flex;gap:.4rem;max-width:560px;margin:0 auto 1.5rem;padding:.35rem;border:1.5px solid var(--line);border-radius:999px;background:var(--card)}
+.tab{flex:1;border:0;background:transparent;color:var(--muted);font-weight:700;padding:.6rem .5rem;border-radius:999px;min-height:44px;font-size:.95rem}
+.tab[aria-selected='true']{background:var(--lapis);color:var(--on-lapis)}
+.tab:focus-visible{outline-offset:2px}
+.panel[hidden]{display:none}
+.subtle{color:var(--muted);font-size:.9rem}
+.gsel{display:flex;gap:.5rem;overflow-x:auto;padding:.25rem .1rem .75rem;margin:0 0 .75rem}
+.gbtn{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:.1rem;min-width:88px;padding:.5rem .8rem;border-radius:14px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);min-height:44px}
+.gbtn small{font-size:.85rem;color:var(--muted);white-space:nowrap}
+.gbtn[aria-pressed='true']{border-color:var(--lapis);box-shadow:inset 0 -4px 0 var(--saffron)}
+.ginfo h2{margin:.25rem 0 .2rem;font-size:1.35rem}
+.ginfo p{margin:0;color:var(--muted)}
+h3.sec{margin:2rem 0 .8rem;font-size:1.15rem}
+.lgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
+.lc{background:var(--card);border:1.5px solid var(--line);border-top:6px solid var(--turq);border-radius:18px;padding:1rem;text-align:center}
+.big{font-size:3.6rem;line-height:1.3;font-weight:600;color:var(--lapis)}
+.lname{font-weight:700;font-size:1.1rem}
+.lsound{color:var(--muted);font-size:.9rem;margin:.1rem 0 .8rem}
+.forms{display:grid;grid-template-columns:repeat(4,1fr);gap:.3rem;margin:0 0 .7rem;padding:.5rem .2rem;border-radius:12px;background:var(--bg)}
+.forms div{display:flex;flex-direction:column;align-items:center}
+.gl{font-size:1.7rem;line-height:1.6}
+.forms small{font-size:.66rem;color:var(--muted)}
+.note{font-size:.78rem;color:var(--muted);margin:0 0 .7rem}
+.wlist{display:grid;gap:.7rem}
+.wrow{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:1rem;background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:.7rem 1rem}
+.wrow .msg{grid-column:1/-1;margin:0}
+.wfa{font-size:2.1rem;font-weight:600;color:var(--lapis);min-width:4.5rem;text-align:center}
+.q{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:1rem;margin-bottom:.9rem}
+.qt{margin:0 0 .7rem;font-weight:700}
+.qbig{display:block;font-size:2.6rem;color:var(--lapis);text-align:center;line-height:1.4;margin-bottom:.5rem}
+.opts{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem}
+.opt{min-height:48px;border:1.5px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);padding:.5rem;font-size:1rem}
+.opt.fa-o{font-size:1.6rem}
+.opt:disabled{cursor:default;color:var(--ink);opacity:1}
+.opt.right{border-color:var(--turq);background:rgba(26,154,154,.18)}
+.opt.wrong{border-color:#d0524a;background:rgba(208,82,74,.18)}
+.fb{margin:.6rem 0 0;font-weight:600;min-height:1.2em}
+.qfoot{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;justify-content:space-between;margin-top:.5rem}
+.next{background:var(--lapis);color:var(--on-lapis);border:0;border-radius:999px;padding:.7rem 1.4rem;font-weight:700;min-height:44px}
+.retry{background:transparent;color:var(--ink);border:1.5px solid var(--line);border-radius:999px;padding:.65rem 1.1rem;min-height:44px}
 @media (prefers-reduced-motion:reduce){.inner{transition:none}.face{transition:none}}
 </style>
 </head>
@@ -79,8 +119,28 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 1.25rem 2
 </header>
 
 <main>
-  <div class="badge-wrap"><span class="badge">Lesson 1: Everyday Greetings</span></div>
-  <ul class="grid" id="grid" aria-label="Farsi greeting flashcards"></ul>
+  <div class="tabs" role="tablist" aria-label="Lessons">
+    <button type="button" class="tab" role="tab" id="tab-alpha" data-tab="alpha" aria-selected="true" aria-controls="panel-alpha">1. Alphabet Lessons</button>
+    <button type="button" class="tab" role="tab" id="tab-greet" data-tab="greet" aria-selected="false" tabindex="-1" aria-controls="panel-greet">2. Everyday Greetings</button>
+  </div>
+
+  <section class="panel" id="panel-alpha" role="tabpanel" aria-labelledby="tab-alpha">
+    <div class="badge-wrap"><span class="badge">Lesson 1: The Alphabet</span></div>
+    <div class="gsel" id="gsel" role="group" aria-label="Choose a letter group"></div>
+    <div class="ginfo" id="ginfo" aria-live="polite"></div>
+    <h3 class="sec">Meet the Letters</h3>
+    <div class="lgrid" id="letters"></div>
+    <h3 class="sec">Words You Can Read Now</h3>
+    <p class="subtle" style="margin:0 0 .8rem">Short vowels usually aren’t written in Farsi, so the transliteration fills them in.</p>
+    <div class="wlist" id="words"></div>
+    <h3 class="sec">Mini Quiz</h3>
+    <div id="quiz"></div>
+  </section>
+
+  <section class="panel" id="panel-greet" role="tabpanel" aria-labelledby="tab-greet" hidden>
+    <div class="badge-wrap"><span class="badge">Lesson 2: Everyday Greetings</span></div>
+    <ul class="grid" id="grid" aria-label="Farsi greeting flashcards"></ul>
+  </section>
 </main>
 
 <footer>
@@ -174,6 +234,123 @@ CARDS.forEach((c, i) => {
   listenBtn.addEventListener("click", () => listen(c.fa, msg));
   grid.appendChild(li);
 });
+
+/* ---------- Tabs ---------- */
+const tabs=[...document.querySelectorAll('[role=tab]')];
+function showTab(id){tabs.forEach(t=>{const on=t.dataset.tab===id;t.setAttribute('aria-selected',on);t.tabIndex=on?0:-1;document.getElementById('panel-'+t.dataset.tab).hidden=!on;});}
+tabs.forEach((t,i)=>{
+  t.addEventListener('click',()=>showTab(t.dataset.tab));
+  t.addEventListener('keydown',e=>{
+    if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft')return;
+    const n=tabs[(i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length];
+    n.focus();showTab(n.dataset.tab);
+  });
+});
+
+/* ---------- Alphabet lessons ---------- */
+const Z='\u200D';
+const $=id=>document.getElementById(id);
+const el=(tag,cls,html)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;};
+const faH=s=>`<span class='fa' dir='rtl' lang='fa'>${s}</span>`;
+const shuf=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+/* L: [letter, name, sound clue, joins to next letter (1/0)]  W: [word, transliteration, meaning] */
+const GROUPS=[
+ {t:'The line and the bowls',d:'Start with the simple line ا, then meet a family of bowl-shaped letters that differ only by their dots.',
+  L:[['ا','alef','a as in “father”',0],['ب','be','b as in “boy”',1],['پ','pe','p as in “pen”',1],['ت','te','t as in “top”',1],['ث','se','s as in “sun”',1]],
+  W:[['بابا','bābā','dad'],['پا','pā','foot'],['تب','tab','fever']]},
+ {t:'Hooks',d:'These four share one hooked shape. Only the dots decide which letter you’re looking at.',
+  L:[['ج','jim','j as in “jam”',1],['چ','che','ch as in “chair”',1],['ح','he','h as in “hat”, a little breathier',1],['خ','khe','kh like Scottish “loch”',1]],
+  W:[['جا','jā','place'],['تاج','tāj','crown'],['خب','khob','well / okay']]},
+ {t:'The no-join letters',d:'Short, simple curves. None of these joins to the letter after it, so each leaves a small gap.',
+  L:[['د','dāl','d as in “dog”',0],['ذ','zāl','z as in “zoo”',0],['ر','re','r, a light rolled r',0],['ز','ze','z as in “zoo”',0],['ژ','zhe','zh as in “measure”',0],['و','vāv','v as in “van” (also oo or o)',0]],
+  W:[['پدر','pedar','father'],['روز','ruz','day'],['در','dar','door']]},
+ {t:'Teeth and loops',d:'Letters with a row of small teeth (س ش), plus two cousins with a rounded loop (ص ض).',
+  L:[['س','sin','s as in “sun”',1],['ش','shin','sh as in “ship”',1],['ص','sād','s as in “sun”',1],['ض','zād','z as in “zoo”',1]],
+  W:[['سر','sar','head'],['شب','shab','night'],['سبز','sabz','green']]},
+ {t:'Loops, eyes and tails',d:'ط and ظ have a loop, ع and غ look like a small eye, and ف ق ک گ finish the set.',
+  L:[['ط','tā','t as in “top”',1],['ظ','zā','z as in “zoo”',1],['ع','eyn','a catch in the throat, like the pause in “uh-oh”',1],['غ','ghein','gh, like a gargled French r',1],['ف','fe','f as in “fan”',1],['ق','qāf','q, deep in the throat (close to غ)',1],['ک','kāf','k as in “kite”',1],['گ','gāf','g as in “go”',1]],
+  W:[['کتاب','ketāb','book'],['باغ','bāgh','garden'],['کفش','kafsh','shoe']]},
+ {t:'Curves and finishing letters',d:'The last five letters have the most flowing shapes. Once you know them, you can read many everyday words.',
+  L:[['ل','lām','l as in “lamp”',1],['م','mim','m as in “moon”',1],['ن','nun','n as in “net”',1],['ه','he','h as in “hat”',1],['ی','ye','y as in “yes” (also ee)',1]],
+  W:[['سلام','salām','hello'],['چای','chāy','tea'],['دوست','dust','friend']]}
+];
+
+function listenBtn(text,label,msg){const b=el('button','listen','Listen');b.type='button';b.setAttribute('aria-label','Listen to '+label);b.addEventListener('click',()=>listen(text,msg));return b;}
+function msgEl(){const m=el('p','msg');m.hidden=true;m.setAttribute('role','status');return m;}
+
+function renderGroup(i){
+  const g=GROUPS[i];
+  [...$('gsel').children].forEach((b,k)=>b.setAttribute('aria-pressed',k===i));
+  $('ginfo').innerHTML=`<h2>Group ${i+1}: ${g.t}</h2><p>${g.d}</p>`;
+  const lg=$('letters');lg.innerHTML='';
+  g.L.forEach(([c,n,s,j])=>{
+    const forms=[['Isolated',c],['Initial',j?c+Z:c],['Medial',Z+c+(j?Z:'')],['Final',Z+c]];
+    const card=el('div','lc',`<div class='big fa' dir='rtl' lang='fa'>${c}</div><div class='lname'>${n}</div><div class='lsound'>${s}</div><div class='forms'>${forms.map(f=>`<div><span class='gl fa' dir='rtl' lang='fa'>${f[1]}</span><small>${f[0]}</small></div>`).join('')}</div>${j?'':`<p class='note'>Doesn’t join to the next letter, so Initial matches Isolated and Medial matches Final.</p>`}`);
+    const m=msgEl();
+    card.append(listenBtn(c,n,m),m);lg.appendChild(card);
+  });
+  const wl=$('words');wl.innerHTML='';
+  g.W.forEach(([w,tr,en])=>{
+    const r=el('div','wrow',`<div class='wfa fa' dir='rtl' lang='fa'>${w}</div><div><strong>${tr}</strong><br><span class='subtle'>${en}</span></div>`);
+    const m=msgEl();
+    r.append(listenBtn(w,en,m),m);wl.appendChild(r);
+  });
+  renderQuiz(g,i);
+}
+
+function renderQuiz(g,i){
+  const L=shuf(g.L);
+  const uniq=g.L.filter(l=>g.L.filter(m=>m[2]===l[2]).length===1);
+  const t3=shuf(uniq)[0];
+  const pick=(t,f)=>shuf([t,...shuf(g.L.filter(l=>l!==t)).slice(0,3)]).map(l=>({h:f(l),ok:l===t}));
+  const Q=[
+    {q:'What is the name of this letter?',big:L[0][0],fa:0,o:pick(L[0],l=>l[1])},
+    {q:`Which letter is called “${L[1][1]}”?`,fa:1,o:pick(L[1],l=>faH(l[0]))},
+    {q:`Which letter makes this sound: ${t3[2]}?`,fa:1,o:pick(t3,l=>faH(l[0]))},
+    {q:`Which one is the Final shape of ${L[2][1]}?`,fa:1,o:pick(L[2],l=>faH(Z+l[0]))}
+  ];
+  const box=$('quiz');box.innerHTML='';
+  let done=0,score=0;
+  const sum=el('p','fb','Answer all 4 questions.');
+  sum.setAttribute('role','status');
+  Q.forEach((q,qi)=>{
+    const c=el('div','q',`<p class='qt'>${qi+1}. ${q.q}</p>${q.big?`<span class='qbig fa' dir='rtl' lang='fa'>${q.big}</span>`:''}`);
+    const wrap=el('div','opts');
+    const fb=el('p','fb');fb.setAttribute('role','status');
+    q.o.forEach(o=>{
+      const b=el('button',q.fa?'opt fa-o':'opt',o.h);b.type='button';
+      b.addEventListener('click',()=>{
+        [...wrap.children].forEach((x,k)=>{x.disabled=true;if(q.o[k].ok)x.classList.add('right');});
+        if(!o.ok)b.classList.add('wrong');
+        fb.textContent=o.ok?'✓ Correct!':'✗ Not quite. The right answer is highlighted.';
+        if(o.ok)score++;
+        done++;
+        sum.textContent=done===4?`You scored ${score} out of 4.${score===4?' Wonderful!':' Look back at the letters above, then try new questions.'}`:`Answered ${done} of 4`;
+      });
+      wrap.appendChild(b);
+    });
+    c.append(wrap,fb);box.appendChild(c);
+  });
+  const foot=el('div','qfoot');
+  const retry=el('button','retry','Try new questions');retry.type='button';
+  retry.addEventListener('click',()=>renderQuiz(g,i));
+  const last=i===GROUPS.length-1;
+  const next=el('button','next',last?'On to Everyday Greetings →':'Next Group →');next.type='button';
+  next.addEventListener('click',()=>{
+    if(last)showTab('greet');else renderGroup(i+1);
+    document.querySelector('.tabs').scrollIntoView({block:'start'});
+  });
+  foot.append(retry,next);
+  box.append(sum,foot);
+}
+
+GROUPS.forEach((g,i)=>{
+  const b=el('button','gbtn',`<strong>Group ${i+1}</strong><small class='fa' dir='rtl' lang='fa'>${g.L.map(l=>l[0]).join(' ')}</small>`);
+  b.type='button';
+  b.addEventListener('click',()=>renderGroup(i));
+  $('gsel').appendChild(b);
+});
+renderGroup(0);
 </script>
 </body>
 </html>
