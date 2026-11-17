@@ -98,6 +98,11 @@ h3.sec{margin:2rem 0 .8rem;font-size:1.15rem}
 .qfoot{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;justify-content:space-between;margin-top:.5rem}
 .next{background:var(--lapis);color:var(--on-lapis);border:0;border-radius:999px;padding:.7rem 1.4rem;font-weight:700;min-height:44px}
 .retry{background:transparent;color:var(--ink);border:1.5px solid var(--line);border-radius:999px;padding:.65rem 1.1rem;min-height:44px}
+.tabs{max-width:720px}
+.tab{font-size:.9rem;line-height:1.25}
+.fsel{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;margin:0 0 1.25rem}
+.fbtn{border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:.55rem 1.05rem;min-height:44px;font-weight:600}
+.fbtn[aria-pressed='true']{background:var(--lapis);color:var(--on-lapis);border-color:var(--lapis)}
 @media (prefers-reduced-motion:reduce){.inner{transition:none}.face{transition:none}}
 </style>
 </head>
@@ -122,6 +127,7 @@ h3.sec{margin:2rem 0 .8rem;font-size:1.15rem}
   <div class="tabs" role="tablist" aria-label="Lessons">
     <button type="button" class="tab" role="tab" id="tab-alpha" data-tab="alpha" aria-selected="true" aria-controls="panel-alpha">1. Alphabet Lessons</button>
     <button type="button" class="tab" role="tab" id="tab-greet" data-tab="greet" aria-selected="false" tabindex="-1" aria-controls="panel-greet">2. Everyday Greetings</button>
+    <button type="button" class="tab" role="tab" id="tab-vocab" data-tab="vocab" aria-selected="false" tabindex="-1" aria-controls="panel-vocab">3. Everyday Vocabulary</button>
   </div>
 
   <section class="panel" id="panel-alpha" role="tabpanel" aria-labelledby="tab-alpha">
@@ -140,6 +146,12 @@ h3.sec{margin:2rem 0 .8rem;font-size:1.15rem}
   <section class="panel" id="panel-greet" role="tabpanel" aria-labelledby="tab-greet" hidden>
     <div class="badge-wrap"><span class="badge">Lesson 2: Everyday Greetings</span></div>
     <ul class="grid" id="grid" aria-label="Farsi greeting flashcards"></ul>
+  </section>
+
+  <section class="panel" id="panel-vocab" role="tabpanel" aria-labelledby="tab-vocab" hidden>
+    <div class="badge-wrap"><span class="badge">Lesson 3: Everyday Vocabulary</span></div>
+    <div class="fsel" id="vsel" role="group" aria-label="Choose a topic"></div>
+    <ul class="grid" id="vgrid" aria-label="Vocabulary flashcards"></ul>
   </section>
 </main>
 
@@ -351,6 +363,91 @@ GROUPS.forEach((g,i)=>{
   $('gsel').appendChild(b);
 });
 renderGroup(0);
+
+/* ---------- Everyday vocabulary: [English, Farsi, phonetic] ---------- */
+const VOCAB=[
+ {k:'Polite Essentials',c:[
+  ['Please','لطفاً','lot-FAN'],
+  ['Thank you','ممنون','mam-NOON'],
+  ['You’re welcome','خواهش می‌کنم','khaa-HESH mi-ko-NAM'],
+  ['Excuse me','ببخشید','be-bakh-SHEED'],
+  ['Yes','بله','ba-LEH'],
+  ['No','نه','nah'],
+  ['I’m sorry','متأسفم','mo-ta-AS-sef-am'],
+  ['No problem','مشکلی نیست','mosh-ke-LEE nist'],
+  ['Please, go ahead','بفرمایید','be-far-MAA-yeed']]},
+ {k:'Pronouns & Questions',c:[
+  ['I','من','man'],
+  ['You (formal)','شما','sho-MAA'],
+  ['He / She','اون','oon'],
+  ['We','ما','maa'],
+  ['They','اونا','oo-NAA'],
+  ['What?','چی؟','chee'],
+  ['Where?','کجا؟','ko-JAA'],
+  ['Who?','کی؟','kee'],
+  ['Why?','چرا؟','che-RAA'],
+  ['How much?','چقدر؟','che-GHADR']]},
+ {k:'Numbers & Time',c:[
+  ['One','یک','yek'],
+  ['Two','دو','do'],
+  ['Three','سه','seh'],
+  ['Five','پنج','panj'],
+  ['Ten','ده','dah'],
+  ['Today','امروز','em-ROOZ'],
+  ['Tomorrow','فردا','far-DAA'],
+  ['Yesterday','دیروز','dee-ROOZ'],
+  ['Now','الان','a-LAAN'],
+  ['What time is it?','ساعت چنده؟','saa-AT chan-DEH']]},
+ {k:'Food & Dining',c:[
+  ['Water','آب','aab'],
+  ['Bread','نان','naan'],
+  ['Tea','چای','chaay'],
+  ['Rice','برنج','be-RENJ'],
+  ['Delicious','خوشمزه','khosh-ma-ZEH'],
+  ['I’m hungry','گشنمه','gosh-ne-MEH'],
+  ['I’m thirsty','تشنمه','tesh-ne-MEH'],
+  ['Menu, please','منو لطفاً','me-NOO lot-FAN'],
+  ['The bill, please','صورت‌حساب لطفاً','su-rat-he-SAAB lot-FAN'],
+  ['Enjoy your meal','نوش جان','noosh-JAAN']]}
+];
+
+function buildCard(c){
+  const li=document.createElement('li');
+  li.className='card';
+  li.innerHTML=`
+    <div class='inner'>
+      <button type='button' class='face front' aria-label='${c[0]}. Show the Farsi translation.'>
+        <span class='phrase'>${c[0]}</span>
+        <span class='hint'>Tap to flip</span>
+      </button>
+      <div class='face back'>
+        <p class='farsi fa' dir='rtl' lang='fa'>${c[1]}</p>
+        <p class='phon'>${c[2]}</p>
+        <div class='actions'>
+          <button type='button' class='listen' aria-label='Listen to ${c[0]} in Farsi'>Listen</button>
+          <button type='button' class='flip-back'>Flip back</button>
+        </div>
+        <p class='msg' role='status' hidden></p>
+      </div>
+    </div>`;
+  const front=li.querySelector('.front'),fb=li.querySelector('.flip-back'),lb=li.querySelector('.listen'),msg=li.querySelector('.msg');
+  front.addEventListener('click',()=>{li.classList.add('flipped');setTimeout(()=>lb.focus({preventScroll:true}),300);});
+  fb.addEventListener('click',()=>{li.classList.remove('flipped');msg.hidden=true;setTimeout(()=>front.focus({preventScroll:true}),300);});
+  lb.addEventListener('click',()=>listen(c[1],msg));
+  return li;
+}
+
+function renderVocab(i){
+  [...$('vsel').children].forEach((b,k)=>b.setAttribute('aria-pressed',k===i));
+  const vg=$('vgrid');vg.innerHTML='';
+  VOCAB[i].c.forEach(c=>vg.appendChild(buildCard(c)));
+}
+VOCAB.forEach((v,i)=>{
+  const b=el('button','fbtn',v.k);b.type='button';
+  b.addEventListener('click',()=>renderVocab(i));
+  $('vsel').appendChild(b);
+});
+renderVocab(0);
 </script>
 </body>
 </html>
